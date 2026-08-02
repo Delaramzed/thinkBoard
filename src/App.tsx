@@ -1,11 +1,13 @@
 import "./App.css";
 import Header from "./components/header";
 
+
 function App() {
   return (
-    <>
-    <Header/>
-    </>
+    <div className="min-h-screen bg-blue-100">
+      <Header />
+     
+    </div>
   );
 }
 
