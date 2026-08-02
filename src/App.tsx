@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "./components/header";
 import NoteForm from "./components/noteform";
-
+import NoteList from "./components/NoteList";
 
 function App() {
   return (
