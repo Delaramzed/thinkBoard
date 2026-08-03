@@ -4,12 +4,13 @@ import type { Note } from "./note";
 
 type Props = {
   notes: Note[];
+   deleteNote: (id: number) => void;
 };
-function NoteList({ notes }: Props) {
+function NoteList({ notes , deleteNote }: Props) {
   return (
     <div>
       {notes.map((note) => (
-        <NoteCard title={note.title} content={note.content} />
+        <NoteCard note={note} deleteNote={deleteNote}/>
       ))}
     </div>
   );
