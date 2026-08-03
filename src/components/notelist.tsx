@@ -1,9 +1,7 @@
 import NoteCard from "./notecard";
+import type { Note } from "./note";
 
-type Note = {
-  title: string;
-  content: string;
-};
+
 type Props = {
   notes: Note[];
 };
