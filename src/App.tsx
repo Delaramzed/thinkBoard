@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Header from "./components/header";
 import NoteForm from "./components/noteform";
@@ -10,6 +10,11 @@ function App() {
     const saveNote = localStorage.getItem("notes");
     return saveNote ? JSON.parse(saveNote) : [];
   });
+
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
+  const editeNote = (note: Note) => {
+    setEditingNote(note);
+  };
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
@@ -30,8 +35,8 @@ function App() {
     <div className="min-h-screen bg-blue-100">
       <Header />
       <main>
-        <NoteForm submitForm={submitForm} />
-        <NoteList notes={notes} deleteNote={deleteNote} />
+        <NoteForm submitForm={submitForm} editingNote={editingNote} />
+        <NoteList notes={notes} deleteNote={deleteNote} editeNote={editeNote} />
       </main>
     </div>
   );

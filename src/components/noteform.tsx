@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import type { Note } from "./note";
 
 type Props = {
   submitForm: (title: string, content: string) => void;
+  editingNote: Note | null;
 };
 
-function NoteForm({ submitForm }: Props) {
+function NoteForm({ submitForm, editingNote }: Props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
@@ -32,6 +34,12 @@ function NoteForm({ submitForm }: Props) {
     setContent("");
     setError("");
   };
+  useEffect(() => {
+    if (editingNote) {
+      setTitle(editingNote.title);
+      setContent(editingNote.content);
+    }
+  }, [editingNote]);
   return (
     <form
       onSubmit={handleSubmit}
