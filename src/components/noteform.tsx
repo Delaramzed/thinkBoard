@@ -38,6 +38,9 @@ function NoteForm({ submitForm, editingNote }: Props) {
     if (editingNote) {
       setTitle(editingNote.title);
       setContent(editingNote.content);
+    } else {
+      setTitle("");
+      setContent("");
     }
   }, [editingNote]);
   return (
@@ -51,7 +54,7 @@ function NoteForm({ submitForm, editingNote }: Props) {
         value={title}
         onChange={handleTitleChange}
         required
-        className=" font-semibold focus:outline-none border border-gray-400 rounded-lg h-12 w-96"
+        className=" font-semibold focus:outline-none border border-gray-400 rounded-lg h-12 w-96 p-2"
       />
       {error && <p className="text-red-900 text-base">{error}</p>}
 
@@ -60,9 +63,9 @@ function NoteForm({ submitForm, editingNote }: Props) {
         value={content}
         onChange={handleContentChange}
         required
-        className=" resize-none outline-none focus:outline-none border border-gray-400 rounded-lg h-20 w-96 bg-transparent overflow-y-auto"
+        className=" resize-none outline-none focus:outline-none border border-gray-400 rounded-lg h-20 w-96 bg-transparent overflow-y-auto p-2"
       ></textarea>
-      <button className="bg-blue-500 rounded-xl w-30 h-10" type="submit">
+      <button className="bg-blue-500 rounded-xl  h-10 p-2 hover:bg-blue-600 transition" type="submit">
         Create new note
       </button>
     </form>

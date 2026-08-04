@@ -21,20 +21,41 @@ function App() {
   }, [notes]);
 
   const submitForm = (title: string, content: string) => {
+  if (editingNote) {
+    const updatedNotes = notes.map((note) => {
+      if (note.id === editingNote.id) {
+        return {
+          ...note,
+          title,
+          content,
+        };
+      }
+
+      return note;
+    });
+
+    setNotes(updatedNotes);
+    setEditingNote(null);
+
+  } else {
     const newNote: Note = {
       id: Date.now(),
       title,
       content,
     };
+
     setNotes([...notes, newNote]);
-  };
+  }
+};
+     
   const deleteNote = (id: number) => {
     setNotes(notes.filter((note) => note.id !== id));
   };
   return (
-    <div className="min-h-screen bg-blue-100">
+    <div className="min-h-screen bg-blue-200">
       <Header />
-      <main>
+      
+      <main >
         <NoteForm submitForm={submitForm} editingNote={editingNote} />
         <NoteList notes={notes} deleteNote={deleteNote} editeNote={editeNote} />
       </main>

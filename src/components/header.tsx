@@ -1,6 +1,6 @@
 function Header() {
   return (
-    <header className="w-full h-10">
+    <header className="w-full h-20 border-b border-gray-400 pb-4 ">
       <nav className="flex h-full px-10 items-center justify-between">
         <h1 className="font-bold text-xl text-black pt-3">Think Board</h1>
         <div className="flex gap-3">

@@ -8,7 +8,7 @@ type Props = {
 };
 function NoteList({ notes, deleteNote, editeNote }: Props) {
   return (
-    <div>
+    <div className="grid grid-cols-4 gap-3 mt-8 p-4">
       {notes.map((note) => (
         <NoteCard note={note} deleteNote={deleteNote} editeNote={editeNote} />
       ))}
