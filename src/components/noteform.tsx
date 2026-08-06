@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import type { Note } from "./note";
+import type { Note } from "./Note";
 
 type Props = {
-  submitForm: (title: string, content: string) => void;
+  submitForm: (title: string, content: string) => Promise<void>;
   editingNote: Note | null;
 };
 
@@ -20,15 +20,20 @@ function NoteForm({ submitForm, editingNote }: Props) {
     setContent(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (title.length < 2 || title.length > 50) {
-      setError("title must be between 2 and 50 characters");
+    if (title.trim().length < 2 || title.trim().length > 50) {
+      setError("Title must be between 2 and 50 characters");
       return;
     }
 
-    submitForm(title, content);
+    if (content.trim().length < 10 || content.trim().length > 100) {
+      setError("Content must be between 10 and 100 characters");
+      return;
+    }
+
+    await submitForm(title, content);
 
     setTitle("");
     setContent("");
@@ -65,7 +70,10 @@ function NoteForm({ submitForm, editingNote }: Props) {
         required
         className=" resize-none outline-none focus:outline-none border border-gray-400 rounded-lg h-20 w-96 bg-transparent overflow-y-auto p-2"
       ></textarea>
-      <button className="bg-blue-500 rounded-xl  h-10 p-2 hover:bg-blue-600 transition" type="submit">
+      <button
+        className="bg-blue-500 rounded-xl  h-10 p-2 hover:bg-blue-600 transition"
+        type="submit"
+      >
         Create new note
       </button>
     </form>

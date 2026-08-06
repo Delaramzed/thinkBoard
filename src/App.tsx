@@ -1,61 +1,74 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import Header from "./components/header";
-import NoteForm from "./components/noteform";
-import NoteList from "./components/notelist";
-import type { Note } from "./components/note";
+import Header from "./components/Header";
+import NoteForm from "./components/Noteform";
+import NoteList from "./components/Notelist";
+import type { Note } from "./components/Note";
+import { Loading } from "./components/Loading";
+import { api } from "./axios";
 
 function App() {
-  const [notes, setNotes] = useState<Note[]>(() => {
-    const saveNote = localStorage.getItem("notes");
-    return saveNote ? JSON.parse(saveNote) : [];
-  });
-
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const editeNote = (note: Note) => {
     setEditingNote(note);
   };
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [isFetchingNotes, setIsFetchingNotes] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
+    const fetchNotes = async () => {
+      setIsFetchingNotes(true);
 
-  const submitForm = (title: string, content: string) => {
-  if (editingNote) {
-    const updatedNotes = notes.map((note) => {
-      if (note.id === editingNote.id) {
-        return {
-          ...note,
-          title,
-          content,
-        };
+      try {
+        const res = await api.get<{ response: Note[] }>("/api/notes");
+        setNotes(res.data.response);
+      } catch (error: any) {
+        console.log("API ERROR:", error.response?.data);
+      } finally {
+        setIsFetchingNotes(false);
       }
-
-      return note;
-    });
-
-    setNotes(updatedNotes);
-    setEditingNote(null);
-
-  } else {
-    const newNote: Note = {
-      id: Date.now(),
-      title,
-      content,
     };
 
-    setNotes([...notes, newNote]);
-  }
-};
-     
-  const deleteNote = (id: number) => {
-    setNotes(notes.filter((note) => note.id !== id));
+    fetchNotes();
+  }, []);
+
+  const deleteNote = async (id: string) => {
+    setIsDeleting(true);
+
+    try {
+      await api.delete(`/api/notes/${id}`);
+
+      setNotes(notes.filter((note) => note.id !== id));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsDeleting(false);
+    }
   };
+
+  if (isFetchingNotes) return <Loading />;
+
+  const submitForm = async (title: string, content: string) => {
+    try {
+      const body = {
+        title: title.trim(),
+        content: content.trim(),
+      };
+
+      const res = await api.post("/api/notes", body);
+
+      setNotes((prevNotes) => [...prevNotes, res.data.response]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-blue-200">
       <Header />
-      
-      <main >
+
+      <main>
         <NoteForm submitForm={submitForm} editingNote={editingNote} />
         <NoteList notes={notes} deleteNote={deleteNote} editeNote={editeNote} />
       </main>

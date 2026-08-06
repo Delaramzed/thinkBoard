@@ -1,9 +1,10 @@
-import type { Note } from "./note";
+import type { Note } from "./Note";
 
 type Props = {
   note: Note;
   deleteNote: (id: number) => void;
   editeNote: (note: Note)  => void;
+  
 };
 
 function NoteCard({ note, deleteNote, editeNote }: Props) {
@@ -15,7 +16,7 @@ function NoteCard({ note, deleteNote, editeNote }: Props) {
     };
 
   return (
-    <div className="flex flex-col bg-blue-300 rounded-xl w-100 h-40  px-5 py-4 justify-between">
+    <div className="flex flex-col bg-blue-300 rounded-xl w-full h-40  px-5 py-4 justify-between">
       <div>
       <h2 className="font-bold text-lg w-full ">{note.title}</h2>
       <p className="mt-2 text-gray-600 text-base w-full">{note.content}</p>
