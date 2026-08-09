@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 html,
 body,
@@ -11,20 +13,39 @@ body,
 
 :root {
   --background: #f8fafc;
-  --card: #ffffff;
+
+--page-gradient:
+  radial-gradient(
+    1200px 700px at 12% -10%,
+    rgba(25, 95, 210, 0.22),
+    transparent 55%
+  ),
+  radial-gradient(
+    900px 600px at 90% 0%,
+    rgba(55, 105, 180, 0.18),
+    transparent 50%
+  ),
+  linear-gradient(
+    160deg,
+    rgb(185, 205, 225),
+    rgb(215, 228, 241) 45%,
+    rgb(241, 246, 250)
+  );
+  --card: #bfdbfe;
   --primary: #3b82f6;
   --primary-hover: #2563eb;
   --text: #1e293b;
   --border: #e2e8f0;
 }
 
+
 .dark {
-  --background: #0f172a;
+  /* --background: #0f172a; */
   --card: #1e293b;
-  --primary: #3b82f6;
+   --primary: #3b82f6;
   --primary-hover: #2563eb;
-  --text: #f8fafc;
-  --border: #334155;
+   --text: #f8fafc; 
+  /* --border: #334155; */
 }
 
 @theme  {
@@ -34,4 +55,21 @@ body,
   --color-primary-hover: var(--primary-hover);
   --color-text: var(--text);
   --color-border: var(--border);
+}
+body {
+  background-color: var(--background);
+  color: var(--text);
+    font-family: "Inter", "Vazirmatn", sans-serif;
+}
+.note-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+}
+
+
+.app-background {
+  min-height: 100vh;
+  background-image: var(--page-gradient);
+
+ 
 }

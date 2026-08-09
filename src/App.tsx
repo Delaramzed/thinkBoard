@@ -18,7 +18,7 @@ function App() {
   const [isFetchingNotes, setIsFetchingNotes] = useState(false);
   const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
-  
+  const [isDark, setIsDark] = useState(false);
 
   const filteredNotes = notes.filter((note) => {
     const searchText = search.trim().toLowerCase();
@@ -36,11 +36,9 @@ function App() {
 
       try {
         const res = await api.get<{ response: Note[] }>("/api/notes");
-       
 
         setNotes(res.data.response);
       } catch (error: any) {
-       
       } finally {
         setIsFetchingNotes(false);
       }
@@ -88,20 +86,33 @@ function App() {
     setIsFormOpen(false);
   };
 
+  const toggleDarkMode = () => {
+    setIsDark(!isDark);
+    if (!isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-blue-200">
+    <div className="min-h-screen app-background">
       <Header
         search={search}
         setSearch={setSearch}
         setIsFormOpen={setIsFormOpen}
-        
+        isDark={isDark}
+        toggleDarkMode={toggleDarkMode}
       />
 
       <main>
         <h2 className="font-semibold text-2xl p-5 ">All notes</h2>
+        <p className="text-sm text-gray-500 mt-1 pl-5">
+          {notes.length} {notes.length === 1 ? "note" : "notes"}
+        </p>
         {isFormOpen && (
           <div className="flex items-center justify-center fixed inset-0 bg-black/40 ">
-            <div className="w-120 rounded-2xl shadow-xl bg-blue-200">
+            <div className="w-120 rounded-2xl shadow-xl bg-card text-text">
               <NoteForm
                 submitForm={submitForm}
                 editingNote={editingNote}

@@ -52,30 +52,28 @@ function NoteForm({ submitForm, editingNote , setIsFormOpen }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col items-start pl-6 pr-6 pb-6 gap-2 mt-10"
+      className="flex flex-col items-start pl-6 pr-6 pb-6 gap-2 mt-10 bg-card"
     >
       <button className="self-end" type="button" onClick={() => setIsFormOpen(false)}>✕</button>
       <label className="font-bold text-md text-gray-700">Title :</label>
       <input
         placeholder="Enter your note title here"
         type="text"
-        value={title}
         onChange={handleTitleChange}
         required
-        className=" font-semibold focus:outline-none border border-gray-400 rounded-lg h-12 w-96 p-2 "
+        className=" font-semibold focus:outline-none border border-border rounded-lg h-12 w-96 p-2 "
       />
       {error && <p className="text-red-900 text-base">{error}</p>}
       <label className="font-bold text-md text-gray-700">Content :</label>
       <textarea
         placeholder="Enter your note content here"
-        value={content}
         onChange={handleContentChange}
         required
-        className=" resize-none outline-none focus:outline-none border border-gray-400 rounded-lg h-30 w-96 bg-transparent overflow-y-auto p-2"
+        className=" resize-none outline-none focus:outline-none border border-border rounded-lg h-30 w-96 bg-transparent overflow-y-auto p-2"
       ></textarea>
 
       <button
-        className="bg-blue-500 rounded-3xl w-36  h-10 p-2 hover:bg-blue-600 transition self-end text-white"
+        className="bg-primary rounded-3xl w-36  h-10 p-2 hover:bg-primary-hover transition self-end text-text"
         type="submit"
       >
         Create new note
