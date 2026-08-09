@@ -11,10 +11,24 @@ function App() {
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const editeNote = (note: Note) => {
     setEditingNote(note);
+    setIsFormOpen(true);
   };
-  const [isDeleting, setIsDeleting] = useState(false);
+
   const [notes, setNotes] = useState<Note[]>([]);
   const [isFetchingNotes, setIsFetchingNotes] = useState(false);
+  const [search, setSearch] = useState("");
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  
+
+  const filteredNotes = notes.filter((note) => {
+    const searchText = search.trim().toLowerCase();
+
+    if (!searchText) return true;
+    return (
+      note.title.toLowerCase().includes(searchText) ||
+      note.content.toLowerCase().includes(searchText)
+    );
+  });
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -22,9 +36,11 @@ function App() {
 
       try {
         const res = await api.get<{ response: Note[] }>("/api/notes");
+       
+
         setNotes(res.data.response);
       } catch (error: any) {
-        console.log("API ERROR:", error.response?.data);
+       
       } finally {
         setIsFetchingNotes(false);
       }
@@ -34,43 +50,71 @@ function App() {
   }, []);
 
   const deleteNote = async (id: string) => {
-    setIsDeleting(true);
-
     try {
       await api.delete(`/api/notes/${id}`);
 
-      setNotes(notes.filter((note) => note.id !== id));
+      setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
     } catch (error) {
       console.error(error);
     } finally {
-      setIsDeleting(false);
     }
   };
 
   if (isFetchingNotes) return <Loading />;
-
-  const submitForm = async (title: string, content: string) => {
+  const submitForm = async (title: string, content: string, id?: string) => {
     try {
-      const body = {
-        title: title.trim(),
-        content: content.trim(),
-      };
+      if (id) {
+        const res = await api.put(`/api/notes/${id}`, {
+          title: title.trim(),
+          content: content.trim(),
+        });
 
-      const res = await api.post("/api/notes", body);
+        setNotes(
+          notes.map((note) => (note.id === id ? res.data.response : note)),
+        );
 
-      setNotes((prevNotes) => [...prevNotes, res.data.response]);
+        setEditingNote(null);
+      } else {
+        const res = await api.post("/api/notes", {
+          title: title.trim(),
+          content: content.trim(),
+        });
+
+        setNotes((prevNotes) => [...prevNotes, res.data.response]);
+      }
     } catch (error) {
       console.error(error);
     }
+    setIsFormOpen(false);
   };
 
   return (
     <div className="min-h-screen bg-blue-200">
-      <Header />
+      <Header
+        search={search}
+        setSearch={setSearch}
+        setIsFormOpen={setIsFormOpen}
+        
+      />
 
       <main>
-        <NoteForm submitForm={submitForm} editingNote={editingNote} />
-        <NoteList notes={notes} deleteNote={deleteNote} editeNote={editeNote} />
+        <h2 className="font-semibold text-2xl p-5 ">All notes</h2>
+        {isFormOpen && (
+          <div className="flex items-center justify-center fixed inset-0 bg-black/40 ">
+            <div className="w-120 rounded-2xl shadow-xl bg-blue-200">
+              <NoteForm
+                submitForm={submitForm}
+                editingNote={editingNote}
+                setIsFormOpen={setIsFormOpen}
+              />
+            </div>
+          </div>
+        )}
+        <NoteList
+          notes={filteredNotes}
+          deleteNote={deleteNote}
+          editeNote={editeNote}
+        />
       </main>
     </div>
   );

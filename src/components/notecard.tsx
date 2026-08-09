@@ -2,24 +2,24 @@ import type { Note } from "./Note";
 
 type Props = {
   note: Note;
-  deleteNote: (id: number) => void;
-  editeNote: (note: Note)  => void;
-  
+  deleteNote: (id: string) => void;
+  editeNote: (note: Note) => void;
+ 
 };
 
 function NoteCard({ note, deleteNote, editeNote }: Props) {
   const handleDelete = () => {
     deleteNote(note.id);
   };
-   const handleEdite = () => {
-      editeNote(note);
-    };
+  const handleEdite = () => {
+    editeNote(note);
+  };
 
   return (
-    <div className="flex flex-col bg-blue-300 rounded-xl w-full h-40  px-5 py-4 justify-between">
+    <div className="flex flex-col bg-blue-300  rounded-xl w-full h-40  px-5 py-4 justify-between">
       <div>
-      <h2 className="font-bold text-lg w-full ">{note.title}</h2>
-      <p className="mt-2 text-gray-600 text-base w-full">{note.content}</p>
+        <h2 className="font-bold text-lg w-full ">{note.title}</h2>
+        <p className="mt-2 text-gray-600 text-base w-full">{note.content}</p>
       </div>
       <div className="flex flex-row justify-end ">
         <button

@@ -1,9 +1,4 @@
 @import "tailwindcss";
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
 
 html,
 body,
@@ -11,4 +6,32 @@ body,
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+
+:root {
+  --background: #f8fafc;
+  --card: #ffffff;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --text: #1e293b;
+  --border: #e2e8f0;
+}
+
+.dark {
+  --background: #0f172a;
+  --card: #1e293b;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --text: #f8fafc;
+  --border: #334155;
+}
+
+@theme  {
+  --color-background: var(--background);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-text: var(--text);
+  --color-border: var(--border);
 }
