@@ -67,8 +67,8 @@ function App() {
           content: content.trim(),
         });
 
-        setNotes(
-          notes.map((note) => (note.id === id ? res.data.response : note)),
+        setNotes((prevNotes) =>
+          prevNotes.map((note) => (note.id === id ? res.data.response : note)),
         );
 
         setEditingNote(null);
